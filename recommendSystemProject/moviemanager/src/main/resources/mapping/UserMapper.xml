@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.moviemanager.mapper.UserMapper" >
+
+    <resultMap id="BaseResultMap" type="com.good.moviemanager.entity.User" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="register_time" property="registerTime" jdbcType="DATE" />
+        <result column="last_login_time" property="lastLoginTime" jdbcType="DATE" />
+        <result column="authority" property="authority" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="insertOneUser" parameterType="com.good.moviemanager.entity.User">
+        INSERT INTO user(user_id,user_name,user_password,email,register_time,last_login_time,authority)
+        VALUES (#{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR},#{userPassword,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{registerTime,jdbcType=DATE},#{lastLoginTime,jdbcType=DATE},#{authority,jdbcType=INTEGER})
+    </insert>
+
+    <select id="selectAllUsersNoCondition" resultMap="BaseResultMap">
+        SELECT user_id,user_name,user_password,email,register_time,last_login_time,authority FROM user
+    </select>
+
+    <select id="selectAllUsersByCondition" parameterType="com.good.moviemanager.entity.User" resultMap="BaseResultMap">
+        SELECT user_id,user_name,user_password,email,register_time,last_login_time,authority FROM user
+        <where>
+            <if test='userName!=null and userName!=""'>
+                user_name LIKE CONCAT(CONCAT('%', #{userName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test='email!=null and email!=""'>
+                AND email LIKE CONCAT(CONCAT('%', #{email,jdbcType=VARCHAR}),'%')
+            </if>
+        </where>
+        ORDER BY user_id ASC
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT user_id,user_name,user_password,email,register_time,last_login_time,authority FROM user
+        WHERE user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectOneUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT user_id,user_name,user_password,email,register_time,last_login_time,authority FROM user
+        WHERE user_name = #{userName,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteOneUser" parameterType="java.lang.Integer">
+        DELETE FROM user
+        WHERE user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+
+    <update id="updateUserLoginAuthority" parameterType="com.good.moviemanager.entity.User">
+        UPDATE user
+        SET authority = #{authority,jdbcType=INTEGER}
+        WHERE user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateUserMessage" parameterType="com.good.moviemanager.entity.User">
+        UPDATE user
+        SET user_password = #{userPassword,jdbcType=VARCHAR}
+        WHERE user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

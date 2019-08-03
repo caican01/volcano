@@ -1,0 +1,139 @@
+<link rel="stylesheet" type="text/css" href="easyui/themes/metro/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/user.js"></script>
+
+<body>
+    <table id="dg" class="easyui-datagrid" data-options="fitColumns:true,scrollbarSize:0" pageSize="5" pageList="[5, 10, 15,20]" pagination="true" rownumbers="true" url="/user/selectAllUsers" fit="true" toolbar="#tb">
+        <thead>
+            <tr>
+                <th field="cb" checkbox="true" align="center"></th>
+                <th field="userId" width="15" align="center">用户ID</th>
+                <th field="userName" width="auto" align="center">用户名</th>
+                <th field="userPassword" width="auto" align="center">密 码</th>
+                <th field="email" width="auto" align="center">邮箱</th>
+                <th field="registerTime" width="auto" align="center">注册时间</th>
+                <th field="lastLoginTime" width="auto" align="center">上次登录时间</th>
+                <th field="authority" width="auto" align="center">登录权限</th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- CRUD 菜单栏 -->
+    <div id="tb">
+        <div style="margin-top: 5px">
+            <!--plain="true"去掉边框-->
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:openLinkModifyDialog()" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修 改</a>
+            &nbsp;
+            <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+            &nbsp;
+            <a href="javascript:deleteLink()" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删 除</a>
+            &nbsp;
+            <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+            &nbsp;
+            <a id="ban-btn" href="javascript:banLink()" class="easyui-linkbutton" iconCls="icon-ban" plain="true">禁用登录权限</a>
+            &nbsp;
+            <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+            &nbsp;
+            <a id="open-btn" href="javascript:openLink()" class="easyui-linkbutton" iconCls="icon-open" plain="true">启用登录权限</a>
+            &nbsp;
+            <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+            &nbsp;
+            <a href="javaScript:userDataExport()" class="easyui-linkbutton" id="userDataExportBtn" iconCls="icon-export" plain="true">导出用户数据</a>
+        </div>
+        <div style="margin-bottom: 5px;margin-top: 3px">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="text" id="s_name" size="20" placeholder="用户名" onkeydown="if(event.keyCode==13) searchWebSite()" />
+            &nbsp;
+            <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span> 
+            &nbsp;
+            <input type="text" id="s_email" size="20" placeholder="邮 箱" onkeydown="if(event.keyCode==13) searchWebSite()" />
+            &nbsp;
+            <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+            &nbsp;
+            <a href="javascript:searchWebSite()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜 索</a>
+        </div>
+    </div>
+
+    <!-- 修改框内容 -->
+    <div id="dlg" class="easyui-dialog" style="width: 400px;height: 350px;padding: 10px 20px" closed="true" buttons="#dlg-buttons">
+        <form id="fm" method="post">
+            <table cellspacing="8px">
+                <tr>
+                    <td>
+                        <input type="hidden" id="id" name="userId" style="width: 220px" class="easyui-validatebox" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            用户名
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" id="name" name="userName" style="width: 220px" placeholder="用户名" class="easyui-validatebox" required="true" readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            密  码
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" id="word" name="userPassword" style="width: 220px" placeholder="密码" class="easyui-validatebox" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            邮  箱
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" id="email" name="email" style="width: 220px" placeholder="邮箱" class="easyui-validatebox" required="true" readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            注册时间
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" id="register" name="registerTime" style="width: 220px" placeholder="注册时间" class="easyui-validatebox" required="true" readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            上次登录时间
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" id="last-login" name="lastLoginTime" style="width: 220px" placeholder="上次登录时间" class="easyui-validatebox" required="true" readonly="readonly"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            登录权限
+                        </label>
+                    </td>
+                    <td>
+                        <input type="text" id="authority" name="authority" style="width: 220px" placeholder="登录权限" class="easyui-validatebox" required="true" readonly="readonly"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <!-- 修改对话框的 save、close 按钮 -->
+    <div id="dlg-buttons">
+        <a href="javascript:saveLink()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+        <a href="javascript:closeLinkDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
+    </div>
+</body>

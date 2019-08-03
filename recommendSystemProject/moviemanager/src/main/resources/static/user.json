@@ -1,0 +1,25 @@
+[{
+	"id":1,
+	"text":"  网站注册用户",
+	"children":[],
+	"attributes":{
+		"url":"/user"
+	},
+  "iconCls":"icon-user"
+},{
+	"id":2,
+	"text":"  用户收藏",
+	"children":[],
+	"attributes":{
+		"url":"/userLikedMovies"
+	},
+	"iconCls":"icon-like"
+},{
+	"id":3,
+	"text":"  用户评价",
+	"children":[],
+	"attributes":{
+		"url":"/movieReview"
+	},
+	"iconCls":"icon-review"
+}]

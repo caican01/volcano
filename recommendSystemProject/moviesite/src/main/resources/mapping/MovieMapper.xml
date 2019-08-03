@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.movie.moviesite.mapper.MovieMapper" >
+
+    <resultMap id="BaseResultMap" type="com.movie.moviesite.entity.Movie" >
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="movie_name" property="movieName" jdbcType="VARCHAR" />
+        <result column="movie_date" property="movieDate" jdbcType="VARCHAR" />
+        <result column="movie_picture" property="moviePicture" jdbcType="VARCHAR" />
+        <result column="type_list" property="typeList" jdbcType="VARCHAR" />
+        <result column="history_heat" property="historyHeat" jdbcType="INTEGER" />
+        <result column="average_rating" property="averageRating" jdbcType="DOUBLE" />
+        <result column="download" property="download" jdbcType="VARCHAR" />
+        <result column="mc" property="mc" jdbcType="VARCHAR" />
+        <result column="play_id" property="playId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating,download,mc,play_id FROM movie
+        WHERE movie_id = #{movieId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectTopKMovies" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating,download,mc,play_id FROM movie
+        ORDER BY history_heat DESC
+        limit #{k,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByMovieName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating,download,mc,play_id FROM movie
+        WHERE movie_name = #{movieName,jdbcType=VARCHAR}
+        ORDER BY history_heat DESC
+        limit 5
+    </select>
+
+    <select id="selectLikeMovieName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating,download,mc,play_id FROM movie
+        WHERE movie_name LIKE concat(concat('%',#{movieName,jdbcType=VARCHAR}),'%')
+        ORDER BY history_heat DESC
+        limit 5
+    </select>
+
+    <select id="selectByCondition" parameterType="com.movie.moviesite.entity.SelectCondition" resultMap="BaseResultMap">
+        <if test='category == "all"'>
+            SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating,download,mc,play_id FROM movie
+            ORDER BY ${orderColumn} DESC
+            limit #{limitCount,jdbcType=INTEGER},20; <!--跳过前n条，取后面20条-->
+        </if>
+        <if test='category != "all"'>
+            SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating,download,mc,play_id FROM movie
+            WHERE type_list LIKE concat(concat('%',#{category}),'%')
+            ORDER BY ${orderColumn} DESC
+            limit #{limitCount,jdbcType=INTEGER},20;  <!--跳过前n条，取后面20条-->
+        </if>
+    </select>
+
+</mapper>

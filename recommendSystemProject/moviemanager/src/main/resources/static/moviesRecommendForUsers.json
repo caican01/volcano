@@ -1,0 +1,9 @@
+[{
+  "id":1,
+  "text":"  为用户推荐",
+  "children":[],
+  "attributes":{
+    "url":"/moviesRecommendForUsers"
+  },
+  "iconCls":"icon-recommend"
+}]

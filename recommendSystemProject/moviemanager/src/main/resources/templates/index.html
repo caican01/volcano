@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>电影网站后台管理系统主页</title>
+    <link rel="stylesheet" type="text/css" href="easyui/themes/metro/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css"/>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+</head>
+
+<body class="easyui-layout">
+    <!--导航栏-->
+    <div data-options="region:'north',border:false" style="height:90px;background-color: white"><!--#F2F2F2-->
+        <div style="width: 100%;height: 55px;margin-top: 10px">
+            <table style="width: 99%">
+                <tr style="height: 100%">
+                    <td style="height: 100%">
+                        <div style="float: left;margin-bottom: 3px;">
+                            <img src="images/iMovie.png" alt="系统图标">
+                        </div>
+                        <div style="margin-top:18px;float: left;">
+                            <font face="隶书" size="6.5" color="#86CDFA">电影网站管理系统</font>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="float: right;">
+                            <a href="/toLogout" class="easyui-linkbutton" iconCls="icon-quit" plain="true"><font face="宋体" size="4"><strong>退出</strong></font></a>
+                        </div>
+                        <div style="float: right;margin-top: 2px;" th:if="${session.admin.adminName}!=null">
+                            <font face="宋体" size="4" color="#6b9cde">
+                                <strong>欢迎你,</strong>
+                                <strong id="admin" th:text="${session.admin.adminName}"></strong>
+                            </font>
+                            &nbsp;
+                        </div>
+                        <!--<div align="right" style="width: 100%">-->
+                            <!--<a href="/toLogout" class="easyui-linkbutton" iconCls="icon-quit" plain="true";><font face="宋体" size="4"><strong>退出登录</strong></font></a>-->
+                        <!--</div>-->
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--功能面板-->
+    <div data-options="region:'west'" style="width:180px;">
+        <div class="easyui-accordion" data-options="fit:true,border:false">
+            <div title="电影">
+                <ul class="easyui-tree" data-options="selected:true,url:'/movie.json',method:'get',animate:true,onClick:treeNodeClick"></ul>
+            </div>
+            <div title="用户">
+                <ul class="easyui-tree" data-options="selected:true,url:'/user.json',method:'get',animate:true,onClick:treeNodeClick"></ul>
+            </div>
+            <div title="用户电影匹配">
+                <ul class="easyui-tree" data-options="selected:true,url:'/moviesRecommendForUsers.json',method:'get',animate:true,onClick:treeNodeClick"></ul>
+            </div>
+        </div>
+    </div>
+    <!--内容显示区域-->
+    <div data-options="region:'center'" style="overflow: hidden;">
+        <div id="index_tabs" style="overflow: hidden;">
+            <div iconCls="icon-home" title="系统首页" data-options="border:false" style="overflow: hidden;">
+                <!--<img src="images/iMovie.jpg" alt="电影海报" style="width: 1130px;height: 480px">-->
+                <iframe src="/main" frameborder="0" style="border:none;margin-top: 75px;margin-left: 28px;width:95%;height: 60%;box-shadow: 0 0 15px 3px rgba(51, 51, 51, 0.7);">
+                </iframe>
+            </div>
+        </div>
+    </div>
+    <!--底部-->
+    <div data-options="region:'south',border:true" style="height:35px;padding:0px;background-color: white;"><!--#F2F2F2-->
+        <div align="center" style="margin-top: 8px;">
+            版权信息: volcano
+        </div>
+    </div>
+</body>
+</html>

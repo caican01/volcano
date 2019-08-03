@@ -1,0 +1,33 @@
+[{
+    "id":1,
+    "text":"  电 影  数 据",
+    "children":[],
+    "attributes":{
+      "url":"/movie"
+    },
+    "iconCls":"icon-movie1"
+  },{
+    "id":2,
+    "text":"  历史热度榜",
+    "children":[],
+    "attributes":{
+      "url":"/topKHistoryHeatMovies"
+    },
+    "iconCls":"icon-movie2"
+  },{
+  "id":3,
+  "text":"  近期热度榜",
+  "children":[],
+  "attributes":{
+    "url":"/recentMovieHeatRankedList"
+  },
+  "iconCls":"icon-movie3"
+},{
+    "id":4,
+    "text":"  导入&导出",
+    "children":[],
+    "attributes":{
+      "url":"/movieDataUtils"
+    },
+    "iconCls":"icon-import_export"
+}]

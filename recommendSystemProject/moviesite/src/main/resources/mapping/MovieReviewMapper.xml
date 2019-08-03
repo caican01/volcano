@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.movie.moviesite.mapper.MovieReviewMapper" >
+
+    <resultMap id="BaseResultMap" type="com.movie.moviesite.entity.MovieReview" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="timestamp" property="timestamp" jdbcType="BIGINT"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <association property="user" javaType="com.movie.moviesite.entity.User">
+            <id column="user_id" property="userId" jdbcType="INTEGER" />
+            <result column="user_name" property="userName" jdbcType="VARCHAR" />
+            <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+            <result column="email" property="email" jdbcType="VARCHAR" />
+            <result column="register_time" property="registerTime" jdbcType="DATE" />
+            <result column="last_login_time" property="lastLoginTime" jdbcType="DATE" />
+        </association>
+    </resultMap>
+
+    <resultMap id="BaseResultMap1" type="com.movie.moviesite.entity.MovieReview" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="timestamp" property="timestamp" jdbcType="BIGINT"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectMovieReviewByMovieId" parameterType="com.movie.moviesite.entity.CommonCondition" resultMap="BaseResultMap">
+        <if test="limitCount==0"><!--按点赞数降序排序，对应前端'全部'按钮-->
+            SELECT A.user_id,A.movie_id,A.content,A.timestamp,A.count,A.status,B.user_name FROM movieReview A JOIN user B
+            ON A.user_id = B.user_id
+            WHERE A.movie_id = #{categoryId,jdbcType=INTEGER}
+            ORDER BY A.count DESC
+        </if>
+        <if test="limitCount==1"><!--按评论时间戳降序排序，对应前端'最新'按钮-->
+            SELECT A.user_id,A.movie_id,A.content,A.timestamp,A.count,A.status,B.user_name FROM movieReview A JOIN user B
+            ON A.user_id = B.user_id
+            WHERE A.movie_id = #{categoryId,jdbcType=INTEGER}
+            ORDER BY A.timestamp DESC
+        </if>
+        <!--limit 5;-->   <!--每次加载5条评论信息，如果需要更改加载条数的话，直接在这里修改就行了-->
+    </select>
+
+    <select id="selectMovieReviewByMovieIdAndUserId" parameterType="com.movie.moviesite.entity.MovieReview" resultMap="BaseResultMap1">
+        SELECT user_id,movie_id,content,timestamp,count,status FROM movieReview
+        <where>
+            <if test="userId!=null">
+                user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="movieId!=null">
+                AND movie_id = #{movieId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertMovieReview" parameterType="com.movie.moviesite.entity.MovieReview">
+        INSERT INTO movieReview(user_id,movie_id,content,timestamp,count,status)
+        VALUES (#{userId,jdbcType=INTEGER},#{movieId,jdbcType=INTEGER},#{content,jdbcType=VARCHAR},#{timestamp,jdbcType=BIGINT},#{count,jdbcType=INTEGER},#{status,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertMovieReviewSelective" parameterType="com.movie.moviesite.entity.MovieReview">
+        INSERT INTO movieReview
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="movieId != null" >
+                movieId,
+            </if>
+            <if test="content != null" >
+                content,
+            </if>
+            <if test="timestamp != null" >
+                timestamp,
+            </if>
+            <if test="count != null" >
+                count,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="movieId != null" >
+                #{movieId,jdbcType=INTEGER},
+            </if>
+            <if test="content != null" >
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="timestamp != null" >
+                #{timestamp,jdbcType=BIGINT},
+            </if>
+            <if test="count != null" >
+                #{count,jdbcType=INTEGER},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteMovieReviewByMovieIdAndUserId" parameterType="com.movie.moviesite.entity.MovieReview">
+        DELETE FROM movieReview
+        <where>
+            <if test="userId!=null">
+                user_id = #{user_id,jdbcType=INTEGER}
+            </if>
+            <if test="movieId!=null">
+                AND movie_id = #{movie_id,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+    <update id="updateUsefulCount" parameterType="com.movie.moviesite.entity.MovieReview">
+        UPDATE movieReview
+        SET count = #{count,jdbcType=INTEGER},
+        status = #{status,jdbcType=VARCHAR}
+        WHERE user_id = #{userId,jdbcType=INTEGER} AND movie_id = #{movieId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateReviewContent" parameterType="com.movie.moviesite.entity.MovieReview">
+        UPDATE movieReview
+        SET content = #{content,jdbcType=VARCHAR}
+        WHERE user_id = #{userId,jdbcType=INTEGER} AND movie_id = #{movieId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

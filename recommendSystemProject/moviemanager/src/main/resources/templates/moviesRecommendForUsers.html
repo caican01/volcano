@@ -1,0 +1,44 @@
+<link rel="stylesheet" type="text/css" href="easyui/themes/metro/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/movesRecommendForUsers.js"></script>
+
+<body>
+<table id="dg" class="easyui-datagrid" fitColumns="true" data-options="fitColumns:true,scrollbarSize:0" pageSize="5" pageList="[5, 10, 15,20]" pagination="true" rownumbers="true" url="/getMoviesRecommendForAllUsers" fit="true" toolbar="#tb">
+    <thead>
+        <tr>
+            <!--<th field="cb" checkbox="true" align="center"></th>-->
+            <th field="userId" width="auto" align="center">用户ID</th>
+            <th field="userName" width="150" formatter="formatterUserName" align="center">用户名</th>
+            <th field="movieIds" width="350" align="center">推荐结果</th>
+            <th field="authority" width="auto" formatter="formatterAuthority" align="center">登录权限</th>
+        </tr>
+    </thead>
+</table>
+
+<!-- CRUD 菜单栏 -->
+<div id="tb">
+    <div style="margin-bottom: 5px;margin-top: 3px">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" id="s_userName" size="20" placeholder="用户名" onkeydown="if(event.keyCode==13) searchWebSite()" />
+        &nbsp;
+        <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+        &nbsp;
+        <a href="javascript:searchWebSite()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜 索</a>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function formatterUserName(value, row, index) {
+        return row.user.userName;
+    }
+
+    function formatterAuthority(value, row, index) {
+        return row.user.authority;
+    }
+</script>
+
+</body>

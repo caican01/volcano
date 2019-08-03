@@ -1,0 +1,79 @@
+<!--<link rel="stylesheet" type="text/css" href="easyui/themes/material/easyui.css"/>-->
+<!--<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css"/>-->
+<!--<script type="text/javascript" src="js/jquery.js"></script>-->
+<!--<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>-->
+<!--<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>-->
+<!--<script type="text/javascript" src="js/user.js"></script>-->
+
+<!--<body class="easyui-layout">-->
+<!--&lt;!&ndash;数据导入区域&ndash;&gt;-->
+<!--<div style="width:350px;height:120px;margin-top: 70px;margin-left: 20px;float: left;">-->
+    <!--<div align="center">-->
+        <!--<span>-->
+            <!--<font face="宋体" size="4" color="#6b9cde">-->
+                <!--用户数据导入-->
+            <!--</font>-->
+        <!--</span>-->
+    <!--</div>-->
+    <!--<br>-->
+    <!--<div>-->
+        <!--<form class="form-horizontal" id="userDataImportForm" enctype="multipart/form-data" method="post" style="padding: 12px;">-->
+            <!--<div style="float: left">-->
+                <!--<input type="file" id="userDataImportFile" name="userDataImportFile"> &lt;!&ndash;选择待上传文件&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div style="float: right">-->
+                <!--<input type="button" class="btn btn-primary" id="userDataImportBtn" value="导入数据"> &lt;!&ndash;执行上传&ndash;&gt;-->
+            <!--</div>-->
+        <!--</form>-->
+    <!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash;数据导出区域&ndash;&gt;-->
+<!--<div style="width:350px;height:120px;margin-top: 70px;margin-left: 300px;float: left">-->
+    <!--<div align="center">-->
+        <!--<span>-->
+            <!--<font face="宋体" size="4" color="#6b9cde">-->
+                <!--用户数据导出-->
+            <!--</font>-->
+        <!--</span>-->
+    <!--</div>-->
+    <!--<br>-->
+    <!--<div align="center" style="margin-top: 5px">-->
+        <!--<a href="javaScript:userDataExport()" class="easyui-linkbutton" id="userDataExportBtn">导出数据</a>&lt;!&ndash;执行导出&ndash;&gt;-->
+    <!--</div>-->
+<!--</div>-->
+<!--</body>-->
+<!--<script type="text/javascript">-->
+
+    <!--$(function () {-->
+        <!--/*-->
+        <!--导入操作-->
+         <!--*/-->
+        <!--$("#userDataImportBtn").click(function () {-->
+            <!--$("#userDataImportForm").form("submit", {-->
+                <!--url: "/importUserExcel",-->
+                <!--onSubmit: function() {-->
+                    <!--/*前端验证，再次使用EasyUI 提供的校验 class*/-->
+                    <!--return $(this).form("validate");-->
+                <!--},-->
+                <!--success: function(result) {-->
+                    <!--var result = eval('(' + result + ')');-->
+                    <!--/* 后台传来一个true */-->
+                    <!--if(result.success) {-->
+                        <!--$.messager.alert("系统提示", "导入数据成功");-->
+                        <!--$("#userDataImportFile").val(null)-->
+                    <!--}else {-->
+                        <!--$.messager.alert("系统提示", "文档格式错误,导入数据失败");-->
+                    <!--}-->
+                <!--}-->
+            <!--});-->
+        <!--});-->
+    <!--});-->
+
+    <!--/*-->
+    <!--导出操作-->
+     <!--*/-->
+    <!--function userDataExport() {-->
+        <!--window.location.href = "/exportUserExcel"-->
+    <!--}-->
+
+<!--</script>-->

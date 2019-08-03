@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.movie.moviesite.mapper.UserMapper" >
+
+    <resultMap id="BaseResultMap" type="com.movie.moviesite.entity.User" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="register_time" property="registerTime" jdbcType="DATE" />
+        <result column="last_login_time" property="lastLoginTime" jdbcType="DATE" />
+        <result column="authority" property="authority" jdbcType="INTEGER" />
+    </resultMap>
+
+    <!--配置插入成功后返回该记录的主键Id(主键userId要设置为自增长):useGeneratedKeys="true" keyProperty="userId"-->
+    <insert id="insertUser" parameterType="com.movie.moviesite.entity.User" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO user(user_name,user_password,email,register_time,last_login_time,authority)
+        VALUES(#{userName,jdbcType=VARCHAR},#{userPassword,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{registerTime,jdbcType=DATE},#{lastLoginTime,jdbcType=DATE},#{authority,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.movie.moviesite.entity.User" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userName != null" >
+                user_name,
+            </if>
+            <if test="userPassword != null" >
+                user_password,
+            </if>
+            <if test="email != null" >
+                email,
+            </if>
+            <if test="registerTime != null" >
+                register_time,
+            </if>
+            <if test="lastLoginTime != null" >
+                last_login_time,
+            </if>
+            <if test="authority != null" >
+                authority,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userName != null" >
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null" >
+                #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null" >
+                #{registerTime,jdbcType=DATE},
+            </if>
+            <if test="lastLoginTime != null" >
+                #{lastLoginTime,jdbcType=DATE},
+            </if>
+            <if test="authority != null" >
+                #{authority,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT user_id,user_name,user_password,email,register_time,last_login_time,authority FROM user
+        WHERE user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT user_id,user_name,user_password,email,register_time,last_login_time,authority FROM user
+        WHERE email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT user_id,user_name,user_password,email,register_time,last_login_time,authority FROM user
+        WHERE email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateUserNameAndUserPassword" parameterType="com.movie.moviesite.entity.User">
+        UPDATE user
+        SET user_name = #{userName,jdbcType=VARCHAR},
+        user_password = #{userPassword,jdbcType=VARCHAR}
+        WHERE user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateUser" parameterType="com.movie.moviesite.entity.User">
+        UPDATE user
+        SET user_name = #{userName,jdbcType=VARCHAR},
+        user_password = #{userPassword,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        register_time = #{registerTime,jdbcType=DATE},
+        last_login_time = #{lastLoginTime,jdbcType=DATE}
+        WHERE user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateUserSelective" parameterType="com.movie.moviesite.entity.User">
+        UPDATE user
+        <set >
+            <if test="userName != null" >
+                user_id = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null" >
+                user_password = #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null" >
+                register_time = #{registerTime,jdbcType=DATE},
+            </if>
+            <if test="lastLoginTime != null" >
+                last_login_time = #{lastLoginTime,jdbcType=DATE},
+            </if>
+        </set>
+        WHERE user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

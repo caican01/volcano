@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.moviemanager.mapper.MoviesRecommendForAllUsersMapper" >
+
+    <resultMap id="BaseResultMap" type="com.good.moviemanager.entity.MoviesRecommendForAllUsers" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="movie_ids" property="movieIds" jdbcType="VARCHAR" />
+        <association property="user" javaType="com.good.moviemanager.entity.User">
+            <id column="user_id" property="userId" jdbcType="INTEGER" />
+            <result column="user_name" property="userName" jdbcType="VARCHAR" />
+            <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+            <result column="email" property="email" jdbcType="VARCHAR" />
+            <result column="register_time" property="registerTime" jdbcType="DATE" />
+            <result column="last_login_time" property="lastLoginTime" jdbcType="DATE" />
+            <result column="authority" property="authority" jdbcType="INTEGER" />
+        </association>
+    </resultMap>
+
+    <select id="selectAllMoviesRecommendForUsers" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT A.user_id,A.user_name,A.user_password,A.email,A.register_time,A.last_login_time,A.authority,B.movie_ids
+        FROM user A JOIN moviesRecommendForAllUsers B ON A.user_id = B.user_id
+        <if test='userName!=null and userName!=""'>
+            WHERE A.user_name LIKE CONCAT(CONCAT('%', #{userName,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+
+</mapper>

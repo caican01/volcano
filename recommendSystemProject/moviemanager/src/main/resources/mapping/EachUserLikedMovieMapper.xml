@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.moviemanager.mapper.EachUserLikedMovieMapper" >
+
+    <resultMap id="BaseResultMap" type="com.good.moviemanager.entity.EachUserLikedMovie" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="timestamp" property="timestamp" jdbcType="BIGINT" />
+        <association property="movie" javaType="com.good.moviemanager.entity.Movie">
+            <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+            <result column="movie_name" property="movieName" jdbcType="VARCHAR" />
+            <result column="movie_date" property="movieDate" jdbcType="VARCHAR" />
+            <result column="movie_picture" property="moviePicture" jdbcType="VARCHAR" />
+            <result column="type_list" property="typeList" jdbcType="VARCHAR" />
+            <result column="history_heat" property="historyHeat" jdbcType="INTEGER" />
+            <result column="average_rating" property="averageRating" jdbcType="DOUBLE" />
+        </association>
+        <association property="user" javaType="com.good.moviemanager.entity.User">
+            <id column="user_id" property="userId" jdbcType="INTEGER" />
+            <result column="user_name" property="userName" jdbcType="VARCHAR" />
+            <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+            <result column="email" property="email" jdbcType="VARCHAR" />
+            <result column="register_time" property="registerTime" jdbcType="DATE" />
+            <result column="last_login_time" property="lastLoginTime" jdbcType="DATE" />
+            <result column="authority" property="authority" jdbcType="INTEGER" />
+        </association>
+    </resultMap>
+
+    <select id="selectAllUsersLikedMovies" parameterType="com.good.moviemanager.entity.QueryCondition" resultMap="BaseResultMap">
+        SELECT A.user_id,A.user_name,A.user_password,A.email,A.register_time,A.last_login_time,A.authority,
+        M.movie_id,M.movie_name,M.movie_date,M.movie_picture,M.type_list,M.history_heat,M.average_rating,B.timestamp FROM user A
+        JOIN eachUserLikedMovie B ON A.user_id = B.user_id
+        JOIN movie M ON B.movie_id = M.movie_id
+        <where>
+            <if test='type!=null and type!=""'> <!--查询条件类的属性：typeList在此表示用户名-->
+                A.user_name LIKE CONCAT(CONCAT('%', #{type,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test='orderColumn!=null and orderColumn!=""'> <!--查询条件类的属性：orderColumn在此表示电影名-->
+                AND M.movie_name LIKE CONCAT(CONCAT('%', #{orderColumn,jdbcType=VARCHAR}),'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

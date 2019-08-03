@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.movie.moviesite.mapper.EachUserLikedMovieMapper" >
+
+    <resultMap id="BaseResultMap" type="com.movie.moviesite.entity.EachUserLikedMovie" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="timestamp" property="timestamp" jdbcType="BIGINT" />
+        <association property="movie" javaType="com.movie.moviesite.entity.Movie">
+            <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+            <result column="movie_name" property="movieName" jdbcType="VARCHAR" />
+            <result column="movie_date" property="movieDate" jdbcType="VARCHAR" />
+            <result column="movie_picture" property="moviePicture" jdbcType="VARCHAR" />
+            <result column="type_list" property="typeList" jdbcType="VARCHAR" />
+            <result column="history_heat" property="historyHeat" jdbcType="INTEGER" />
+            <result column="average_rating" property="averageRating" jdbcType="DOUBLE" />
+        </association>
+    </resultMap>
+
+    <resultMap id="BaseResultMap1" type="com.movie.moviesite.entity.EachUserLikedMovie" >
+        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="timestamp" property="timestamp" jdbcType="BIGINT" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.movie.moviesite.entity.EachUserLikedMovie">
+        INSERT INTO eachUserLikedMovie(user_id,movie_id,timestamp)
+        VALUES (#{userId,jdbcType=INTEGER},#{movieId,jdbcType=INTEGER},#{timestamp,jdbcType=BIGINT})
+    </insert>
+
+    <delete id="delete" parameterType="com.movie.moviesite.entity.EachUserLikedMovie">
+        DELETE FROM eachUserLikedMovie
+        WHERE user_id = #{userId,jdbcType=INTEGER} AND movie_id = #{movieId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT A.movie_id,A.movie_name,A.movie_date,A.movie_picture,A.type_list,A.history_heat,A.average_rating,B.user_id,B.timestamp
+        FROM movie A JOIN eachUserLikedMovie B
+        ON A.movie_id = B.movie_id
+        WHERE B.user_id = #{usrId,jdbcType=INTEGER}
+        ORDER BY B.timestamp DESC
+        <!-- limit 5 -->    <!--我觉得这里应该做分页的，但是实现还有一定的工作量，所以这里就先每次取5条记录-->
+    </select>
+
+    <select id="userIsLikeTheMovie" parameterType="com.movie.moviesite.entity.EachUserLikedMovie" resultMap="BaseResultMap1">
+        SELECT user_id,movie_id,timestamp from eachUserLikedMovie
+        WHERE user_id = #{userId,jdbcType=INTEGER} AND movie_id = #{movieId,jdbcType=INTEGER}
+    </select>
+
+</mapper>

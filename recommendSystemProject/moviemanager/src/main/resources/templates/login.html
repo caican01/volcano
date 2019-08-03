@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>FX/发现好电影后台管理系统登录界面</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css"/>
+    <link rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css"/>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+</head>
+<body class="easyui-layout">
+<!--内容显示区域-->
+<div data-options="region:'center'" style="overflow: hidden;border: none">
+    <div class="login">
+        <div id="title">
+        <span style="color: #f56600;text-align: center"><!--橙色 #f56600-->
+            管 理 员 登 录
+        </span>
+        </div>
+        <div id="fm">
+            <form id="form" method="post">
+                <input type="text" name="adminName" placeholder="账 号" id="login-text">
+                <input type="password" name="adminPassword" placeholder="密 码" id="login-pwd">
+            </form>
+            <input type="button" id="login-sub" value="登       录" onclick="login()">
+        </div>
+    </div>
+</div>
+</body>
+</html>

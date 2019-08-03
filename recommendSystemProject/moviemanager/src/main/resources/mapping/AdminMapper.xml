@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.moviemanager.mapper.AdminMapper" >
+
+    <resultMap id="BaseResultMap" type="com.good.moviemanager.entity.Admin" >
+        <id column="admin_id" property="adminId" jdbcType="INTEGER" />
+        <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+        <result column="admin_password" property="adminPassword" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectByAdminName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT admin_id,admin_name,admin_password FROM admin
+        WHERE admin_name = #{adminName,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

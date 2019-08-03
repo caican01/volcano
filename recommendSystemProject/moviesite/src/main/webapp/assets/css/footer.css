@@ -1,0 +1,11 @@
+.footer {
+    background-color: black;
+    color: #CCC;
+    font-size: 12px;
+    text-align: center;
+    padding: 45px 0;
+    position: relative;
+    margin-top: -130px; /*等于footer的高度*/
+    height: 130px;
+    clear:both;
+}

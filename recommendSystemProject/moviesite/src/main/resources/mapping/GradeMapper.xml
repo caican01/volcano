@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.movie.moviesite.mapper.GradeMapper" >
+
+    <resultMap id="BaseResultMap" type="com.movie.moviesite.entity.StuGrade" >
+        <id column="stu_id" property="stuid" jdbcType="INTEGER" />
+        <result column="grade" property="grade" jdbcType="BIGINT" />
+        <association property="stu" javaType="com.movie.moviesite.entity.Stu">
+            <id column="stu_id" property="stuId" jdbcType="INTEGER" />
+            <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+
+    <select id="getStuGrade" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT A.stu_id,A.stu_name,B.grade from stu A join stuGrade B ON
+        A.stu_id = B.stu_id WHERE B.grade LIKE concat(concat('%',#{k}),'%')
+    </select>
+
+    <insert id="insertGrade" parameterType="com.movie.moviesite.entity.StuGrade">
+        INSERT INTO stuGrade(stu_id,grade) VALUES(#{stuid},#{grade})
+    </insert>
+
+</mapper>

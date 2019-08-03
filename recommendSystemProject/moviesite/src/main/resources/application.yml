@@ -1,0 +1,42 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://volcano01.cc.com:3306/MovieRecommendSystem?characterEncoding=utf-8
+    username: root
+    password: 123456
+    tomcat:
+      test-on-borrow: true
+      test-while-idle: true
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+  thymeleaf:
+    cache: false
+    enabled: false
+
+  data:
+    mongodb:
+      uri: mongodb://volcano01.cc.com:27017/RecommendSystem.RatingsCollection
+
+  kafka:
+    bootstrap-servers: volcano01.cc.com:9092,volcano02.cc.com:9092,volcano03.cc.com:9092
+
+    producer:
+      retries: 0
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        linger.ms: 1
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.movie.moviesite.entity

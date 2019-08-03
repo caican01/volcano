@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.good.moviemanager.mapper.RecentMovieHeatRankedListMapper">
+
+    <resultMap id="BaseResultMap" type="com.good.moviemanager.entity.RecentMovieHeatRankedList">
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="recent_heat" property="recentHeat" jdbcType="INTEGER" />
+        <association property="movie" javaType="com.good.moviemanager.entity.Movie">
+            <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+            <result column="movie_name" property="movieName" jdbcType="VARCHAR" />
+            <result column="movie_date" property="movieDate" jdbcType="VARCHAR" />
+            <result column="movie_picture" property="moviePicture" jdbcType="VARCHAR" />
+            <result column="type_list" property="typeList" jdbcType="VARCHAR" />
+            <result column="history_heat" property="historyHeat" jdbcType="INTEGER" />
+            <result column="average_rating" property="averageRating" jdbcType="DOUBLE" />
+        </association>
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT M.movie_id,M.movie_name,M.movie_date,M.movie_picture,M.type_list,M.history_heat,M.average_rating,B.recent_heat FROM movie M
+        JOIN recentMovieHeatRankedList B ON M.movie_id = B.movie_id
+        ORDER BY B.recent_heat DESC
+        <!--limit 10--><!--谨记，用了分页插件pageHelper就不能用limit关键字了-->
+    </select>
+
+</mapper>

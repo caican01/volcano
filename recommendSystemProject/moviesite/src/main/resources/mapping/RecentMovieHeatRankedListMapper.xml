@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.movie.moviesite.mapper.RecentMovieHeatRankedListMapper" >
+
+    <resultMap id="BaseResultMap" type="com.movie.moviesite.entity.RecentMovieHeatRankedList" >
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="recent_heat" property="recentHeat" jdbcType="INTEGER" />
+        <association property="movie" javaType="com.movie.moviesite.entity.Movie">
+            <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+            <result column="movie_name" property="movieName" jdbcType="VARCHAR" />
+            <result column="movie_date" property="movieDate" jdbcType="VARCHAR" />
+            <result column="movie_picture" property="moviePicture" jdbcType="VARCHAR" />
+            <result column="type_list" property="typeList" jdbcType="VARCHAR" />
+            <result column="history_heat" property="historyHeat" jdbcType="INTEGER" />
+            <result column="average_rating" property="averageRating" jdbcType="INTEGER" />
+        </association>
+    </resultMap>
+
+    <select id="selectTopKRecentHeatMovies" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT A.movie_id,A.movie_name,A.movie_date,A.movie_picture,A.type_list,A.history_heat,A.average_rating,B.recent_heat
+        FROM movie A JOIN recentMovieHeatRankedList B
+        ON A.movie_id = B.movie_id
+        ORDER BY B.recent_heat DESC
+        limit #{k,jdbcType=INTEGER}
+    </select>
+
+</mapper>

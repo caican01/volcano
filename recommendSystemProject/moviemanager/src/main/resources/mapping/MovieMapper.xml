@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.good.moviemanager.mapper.MovieMapper" >
+
+    <resultMap id="BaseResultMap" type="com.good.moviemanager.entity.Movie" >
+        <id column="movie_id" property="movieId" jdbcType="INTEGER" />
+        <result column="movie_name" property="movieName" jdbcType="VARCHAR" />
+        <result column="movie_date" property="movieDate" jdbcType="VARCHAR" />
+        <result column="movie_picture" property="moviePicture" jdbcType="VARCHAR" />
+        <result column="type_list" property="typeList" jdbcType="VARCHAR" />
+        <result column="history_heat" property="historyHeat" jdbcType="INTEGER" />
+        <result column="average_rating" property="averageRating" jdbcType="BIGINT" />
+    </resultMap>
+
+    <select id="selectAllMovies" parameterType="com.good.moviemanager.entity.QueryCondition" resultMap="BaseResultMap">
+        SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating FROM movie
+        <where>
+            <if test='movieName!=null and movieName!=""'>
+                movie_name LIKE CONCAT(CONCAT('%', #{movieName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test='type!=null and type!=""'>
+                AND type_list LIKE CONCAT(CONCAT('%', #{type,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test='movieDate!=null and movieDate!=""'>
+                AND movie_date LIKE CONCAT(CONCAT('%', #{movieDate,jdbcType=VARCHAR}),'%')
+            </if>
+        </where>
+        <if test='orderColumn!=null and orderColumn!=""'>
+            <!--
+            mybatis的动态排序问题：排序字段值的注入不能使用#{}符号，因为这样会使sql语句失效，
+            要使用${}符号注入sql语句才生效}
+            -->
+            ORDER BY ${orderColumn} DESC
+        </if>
+    </select>
+
+    <select id="selectByMovieId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating FROM movie
+        WHERE movie_id = #{movieId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectTopKHistoryHeatMovies" resultMap="BaseResultMap">
+        SELECT movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating FROM movie
+        ORDER BY history_heat DESC
+        <!--limit 10  使用mybatis的分页插件pageHelper，那么在sql语句中不能再出现limit关键字了  -->
+    </select>
+
+    <insert id="insertOneMovie" parameterType="com.good.moviemanager.entity.Movie">
+        INSERT INTO movie(movie_name,movie_date,movie_picture,type_list)
+        VALUES (#{movieName,jdbcType=VARCHAR},#{movieDate,jdbcType=VARCHAR},#{moviePicture,jdbcType=VARCHAR},#{typeList,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="importOneMovie" parameterType="com.good.moviemanager.entity.Movie">
+        INSERT INTO movie(movie_id,movie_name,movie_date,movie_picture,type_list,history_heat,average_rating)
+        VALUES (#{movieId,jdbcType=INTEGER},#{movieName,jdbcType=VARCHAR},#{movieDate,jdbcType=VARCHAR},#{moviePicture,jdbcType=VARCHAR},#{typeList,jdbcType=VARCHAR},#{historyHeat},#{averageRating})
+    </insert>
+
+    <update id="updateOneMovieSelective" parameterType="com.good.moviemanager.entity.Movie">
+        UPDATE movie
+        <set >
+            <if test="movieName != null" >
+                movie_name = #{movieName,jdbcType=VARCHAR},
+            </if>
+            <if test="movieDate != null" >
+                movie_date = #{movieDate,jdbcType=VARCHAR},
+            </if>
+            <if test="moviePicture != null" >
+                movie_picture = #{moviePicture,jdbcType=VARCHAR},
+            </if>
+            <if test="typeList != null" >
+                type_list = #{typeList,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE movie_id = #{movieId,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteOneMovie" parameterType="java.lang.Integer">
+        DELETE FROM movie
+        WHERE movie_id = #{movieId,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

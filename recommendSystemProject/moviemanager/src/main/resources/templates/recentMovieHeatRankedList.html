@@ -1,0 +1,60 @@
+<link rel="stylesheet" type="text/css" href="easyui/themes/metro/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="easyui/locale/easyui-lang-zh_CN.js"></script>
+
+<body>
+<table id="dg" class="easyui-datagrid" data-options="fitColumns:true,scrollbarSize:0" pageList="[5, 10, 15,20]"
+       pagination="true" rownumbers="true" url="/getTopKRecentHeatMovies" fit="true" toolbar="#tb">
+    <thead>
+        <tr>
+            <th field="movieId" width="auto" align="center">电影ID</th>
+            <th field="movieName" width="auto" formatter="formatterMovieName" align="center">片 名</th>
+            <th field="movieDate" width="auto" formatter="formatterMovieDate" align="center">上映日期</th>
+            <th field="moviePicture" width="auto" formatter="formatterMoviePicture" align="center">海报链接</th>
+            <th field="typeList" width="auto" formatter="formatterTypeList" align="center">影片类型</th>
+            <th field="historyHeat" width="auto" formatter="formatterHistoryHeat" align="center">历史热度</th>
+            <th field="averageRating" width="auto" formatter="formatterAverageRating" align="center">评 分</th>
+            <th field="recentHeat" width="8" align="center">近期热度</th>
+        </tr>
+    </thead>
+</table>
+
+<!-- CRUD 菜单栏 -->
+<div id="tb">
+    <div style="margin-top: 5px">
+    </div>
+    <div style="margin-bottom: 5px;margin-top: 3px">
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function formatterMovieName(value, row, index) {
+        return row.movie.movieName;
+    }
+
+    function formatterMovieDate(value,row,index) {
+        return row.movie.movieDate;
+    }
+
+    function formatterMoviePicture(value, row, index) {
+        return row.movie.moviePicture;
+    }
+
+    function formatterTypeList(value,row,index) {
+        return row.movie.typeList;
+    }
+
+    function formatterHistoryHeat(value,row,index) {
+        return row.movie.historyHeat;
+    }
+
+    function formatterAverageRating(value,row,index) {
+        return row.movie.averageRating;
+    }
+</script>
+
+
+</body>
