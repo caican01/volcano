@@ -1,0 +1,12 @@
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+VOLCANO@Lenovo-PC MINGW64 ~/Desktop/²Ö¿â (master)
+$ git branch -a
+* master
+  remotes/origin/master
+
+VOLCANO@Lenovo-PC MINGW64 ~/Desktop/²Ö¿â (master)
+$ git checkout -b follower origin/follower
+fatal: 'origin/follower' is not a commit and a branch 'follower' cannot be created from it
+
+V
