@@ -13,3 +13,5 @@ public class RatingRecord implements Serializable{
     private Long timestamp; //∆¿∑÷ ±º‰¥¡
 
 }
+11111111111111111111111111111
+22222222222222222222222222222
